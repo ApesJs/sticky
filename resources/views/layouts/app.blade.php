@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ isset($title) ? $title . ' / ' . config('app.name', 'Sticky') : config('app.name', 'Sticky') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -26,11 +26,12 @@
                     </div>
                 </header>
             @endif
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+            <div class="py-12">
+                <!-- Page Content -->
+                <main>
+                    {{ $slot }}
+                </main>
+            </div>
         </div>
     </body>
 </html>
