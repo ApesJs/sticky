@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stores', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->string('logo')->nullable();
             $table->string('name');
-            $table->string('slug');
-            $table->text('description');
-            $table->string('status')->default(\App\Enums\StoreStatus::PENDING->value);
             $table->timestamps();
+        });
+
+        Schema::create('user_role', function (Blueprint $table) {
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('role_id')->constrained('roles');
+
+            $table->primary(['user_id', 'role_id']);
         });
     }
 
@@ -28,6 +30,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stores');
+        Schema::dropIfExists('roles');
+        Schema::dropIfExists('user_role');
     }
 };
