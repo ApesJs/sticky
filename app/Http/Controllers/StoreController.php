@@ -13,7 +13,7 @@ class StoreController extends Controller
      */
     public function index()
     {
-        return view('store.index', [
+        return view('stores.index', [
             'stores' => Store::query()->latest()->get()
         ]);
     }
@@ -23,7 +23,16 @@ class StoreController extends Controller
      */
     public function create()
     {
-        return view('store.create');
+        return view('stores.form',[
+            'store' => new Store(),
+            'page_meta' => [
+                'title' => 'Create User',
+                'description' => 'You can create your stores.',
+                'method' => 'post',
+                'url' => route('stores.store'),
+                'submit_text' => 'Create'
+            ]
+        ]);
     }
 
     /**
@@ -49,15 +58,25 @@ class StoreController extends Controller
      */
     public function show(Store $store)
     {
-        return view('store.show', compact('store'));
+        return view('stores.show', compact('store'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Store $store)
+    public function edit(Request $request, Store $store)
     {
-        return view('store.edit', compact('store'));
+        abort_if($request->user()->isNot($store->user), 401);
+        return view('stores.form', [
+            'store' => $store,
+            'page_meta' => [
+                'title' => 'Update User',
+                'description' => 'You can edit your stores.',
+                'method' => 'put',
+                'url' => route('stores.update', $store),
+                'submit_text' => 'Update'
+            ]
+        ]);
     }
 
     /**
@@ -65,7 +84,11 @@ class StoreController extends Controller
      */
     public function update(StoreRequest $request, Store $store)
     {
-        dd($request->all());
+        $store->update([
+            ...$request->validated(),
+        ]);
+
+        return redirect()->route('stores.index');
     }
 
     /**

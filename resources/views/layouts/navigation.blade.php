@@ -47,7 +47,7 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
                         <x-dropdown-link :href="route('stores.create')">
-                            {{ __('Create new store') }}
+                            {{ __('Create new stores') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
