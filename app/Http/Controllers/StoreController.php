@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRequest;
 use App\Models\Store;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class StoreController extends Controller
 {
@@ -40,10 +41,6 @@ class StoreController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        if (!$request->user()){
-            return redirect()->route('login');
-        }
-
 //        slug di generate di dalam StoreObserver
         $request->user()->stores()->create([
             ...$request->validated(),
@@ -66,7 +63,8 @@ class StoreController extends Controller
      */
     public function edit(Request $request, Store $store)
     {
-        abort_if($request->user()->isNot($store->user), 401);
+        Gate::authorize('update', $store);
+
         return view('stores.form', [
             'store' => $store,
             'page_meta' => [
