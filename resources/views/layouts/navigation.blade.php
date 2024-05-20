@@ -20,7 +20,7 @@
                             {{ __('Dashboard') }}
                         </x-nav-link>
                     @endauth
-                    <x-nav-link :href="route('store.index')" :active="request()->routeIs('store.index')">
+                    <x-nav-link :href="route('stores.index')" :active="request()->routeIs('stores.index')">
                         {{ __('Store') }}
                     </x-nav-link>
                 </div>
@@ -46,7 +46,7 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
-                        <x-dropdown-link :href="route('store.create')">
+                        <x-dropdown-link :href="route('stores.create')">
                             {{ __('Create new store') }}
                         </x-dropdown-link>
 

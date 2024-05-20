@@ -1,3 +1,3 @@
-<h2 class="font-semibold tracking-tighter text-lg">
+<h3 class="text-xl font-semibold leading-none tracking-tighter">
     {{ $slot }}
-</h2>
+</h3>

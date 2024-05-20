@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRequest;
 use App\Models\Store;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,9 @@ class StoreController extends Controller
      */
     public function index()
     {
-        return view('store.index');
+        return view('store.index', [
+            'stores' => Store::query()->latest()->get()
+        ]);
     }
 
     /**
@@ -26,9 +29,19 @@ class StoreController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        dd($request->all());
+        if (!$request->user()){
+            return redirect()->route('login');
+        }
+
+//        slug di generate di dalam StoreObserver
+        $request->user()->stores()->create([
+            ...$request->validated(),
+            ...['logo' => $request->file('logo')->store('images/stores')]
+        ]);
+
+        return redirect()->route('stores.index');
     }
 
     /**
@@ -50,7 +63,7 @@ class StoreController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Store $store)
+    public function update(StoreRequest $request, Store $store)
     {
         dd($request->all());
     }
